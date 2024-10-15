@@ -1,11 +1,10 @@
 import streamlit as st
-import requests
 import moviepy.editor as mp
 from google.cloud import speech
 from google.cloud import texttospeech
 from pydub import AudioSegment
 
-# Initialize Google Cloud clients
+# Initialize Google clients
 speech_client = speech.SpeechClient()
 text_to_speech_client = texttospeech.TextToSpeechClient()
 
@@ -14,7 +13,7 @@ def transcribe_audio(video_file):
         # Extract audio from video
         audio_file = "audio.wav"
         video_clip = mp.VideoFileClip(video_file)
-        video_clip.audio.write_audiofile(audio_file)
+        video_clip.audio.write_audiofile(audio_file, bitrate="64k")  # Lower bitrate for faster extraction
 
         # Convert audio to mono
         audio_segment = AudioSegment.from_wav(audio_file)
@@ -43,8 +42,7 @@ def transcribe_audio(video_file):
         return ""
 
 def correct_transcription(transcription):
-    # Add your transcription correction logic here if needed
-    return transcription  # Returning unchanged for now
+    return transcription  # Return unchanged for now
 
 def generate_audio(corrected_text):
     try:
@@ -72,7 +70,7 @@ def replace_audio(video_file):
         video_clip = mp.VideoFileClip(video_file)
         new_audio = mp.AudioFileClip("new_audio.mp3")
         final_video = video_clip.set_audio(new_audio)
-        final_video.write_videofile("final_video.mp4")
+        final_video.write_videofile("final_video.mp4", threads=4)  # Use multiple threads to speed up video export
     except Exception as e:
         st.error(f"Error replacing audio: {e}")
 
