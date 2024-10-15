@@ -1,3 +1,4 @@
+streamlit==1.38.0
 moviepy==1.0.3
 google-cloud-speech==2.27.0
 google-cloud-texttospeech==2.18.0
