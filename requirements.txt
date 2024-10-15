@@ -1,0 +1,6 @@
+streamlit
+openai
+google-cloud-speech
+google-cloud-texttospeech
+moviepy
+requests
